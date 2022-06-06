@@ -32,6 +32,24 @@ IsPkgInstalled()
 }
 
 ############################################################
+# InstallIfNotExist                                        #
+############################################################
+
+InstallIfNotExist()
+{
+   if sudo pacman -Qs "$packageName" > /dev/null
+   then
+     if $Verbose=1
+     then
+       sudo pacman -Sq "$packageName" --noconfirm  --noprogressbar
+     fi
+   else
+     sudo pacman -Sq "$packageName" --noconfirm  --noprogressbar > /dev/null
+   fi
+}
+
+
+############################################################
 # Main code                                                #
 ############################################################
 
@@ -53,40 +71,50 @@ then
   echo "1. Updating system"
   sudo pacman -Syyu --noconfirm --noprogressbar
   echo "2. Removing unneeded packages"
-  sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
+  if sudo pacman -Qdtq
+  then
+    sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
+  fi
 else
   sudo pacman -Syyu --noconfirm --noprogressbar > /dev/null
-  sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar > /dev/null
+  if sudo pacman -Qdtq > /dev/null
+  then
+    sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar > /dev/null
+  fi
 fi
 
-if Verbose=1
-then
-  echo "3. Installing basic development tools"
-  if IsPkgInstalled git
-  then
-    sudo pacman -S git --noconfirm  --noprogressbar
-  fi
-  if IsPkgInstalled curl
-  then
-    sudo pacman -S curl --noconfirm  --noprogressbar
-  fi
-  if IsPkgInstalled base-devel
-  then
-    sudo pacman -Sq base-devel --noconfirm  --noprogressbar
-  fi
-else
-  if IsPkgInstalled git
-  then
-    sudo pacman -S git --noconfirm  --noprogressbar > /dev/null
-  fi
-  if IsPkgInstalled curl
-  then
-    sudo pacman -S curl --noconfirm  --noprogressbar > /dev/null
-  fi
-  if IsPkgInstalled base-devel
-  then
-    sudo pacman -S base-devel --noconfirm  --noprogressbar > /dev/null
-  fi
+InstallIfNotExist git
+InstallIfNotExist curl
+InstallIfNotExist base-devel
+
+#if Verbose=1
+#then
+#  echo "3. Installing basic development tools"
+#  if IsPkgInstalled git
+#  then
+#    sudo pacman -S git --noconfirm  --noprogressbar
+#  fi
+#  if IsPkgInstalled curl
+#  then
+#    sudo pacman -S curl --noconfirm  --noprogressbar
+#  fi
+#  if IsPkgInstalled base-devel
+#  then
+#    sudo pacman -Sq base-devel --noconfirm  --noprogressbar
+#  fi
+#else
+#  if IsPkgInstalled git
+#  then
+#    sudo pacman -S git --noconfirm  --noprogressbar > /dev/null
+#  fi
+#  if IsPkgInstalled curl
+#  then
+#    sudo pacman -S curl --noconfirm  --noprogressbar > /dev/null
+#  fi
+#  if IsPkgInstalled base-devel
+#  then
+#    sudo pacman -S base-devel --noconfirm  --noprogressbar > /dev/null
+#  fi
 
 cd /tmp
 git clone https://aur.archlinux.org/yay.git
