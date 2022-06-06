@@ -37,15 +37,19 @@ IsPkgInstalled()
 
 InstallIfNotExist()
 {
-   Package=$packageName
    if sudo pacman -Qs "$packageName" > /dev/null
    then
      if Verbose=1
      then
-       sudo pacman -Sq "$Package" --noconfirm  --noprogressbar
+       echo "Package $packageName is already installed!"
      fi
    else
-     sudo pacman -Sq "$Package" --noconfirm  --noprogressbar > /dev/null
+     if Verbose=1
+     then
+       sudo pacman -Sq "$packageName" --noconfirm  --noprogressbar
+     else
+       sudo pacman -Sq "$packageName" --noconfirm  --noprogressbar > /dev/null
+     fi
    fi
 }
 
