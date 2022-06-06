@@ -37,6 +37,7 @@ IsPkgInstalled()
 
 InstallIfNotExist()
 {
+   Package=$packageName
    if sudo pacman -Qs "$packageName" > /dev/null
    then
      if Verbose=1
