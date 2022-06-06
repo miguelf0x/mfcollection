@@ -53,14 +53,14 @@ then
   echo "1. Updating system"
 fi
 
-sudo pacman -Syyu --noconfirm --noprogressbar
+sudo pacman -Syyuq --noconfirm --noprogressbar
 
 if Verbose=1
 then
   echo "2. Removing unneeded packages"
 fi
 
-sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
+sudo pacman -Rnsq $(pacman -Qdtq) --noconfirm  --noprogressbar
 
 if Verbose=1
 then
@@ -69,17 +69,17 @@ fi
 
 if IsPkgInstalled git
 then
-  sudo pacman -S git --noconfirm  --noprogressbar
+  sudo pacman -Sq git --noconfirm  --noprogressbar
 fi
 
 if IsPkgInstalled curl
 then
-  sudo pacman -S curl --noconfirm  --noprogressbar
+  sudo pacman -Sq curl --noconfirm  --noprogressbar
 fi
 
 if IsPkgInstalled base-devel
 then
-  sudo pacman -S base-devel --noconfirm  --noprogressbar
+  sudo pacman -Sq base-devel --noconfirm  --noprogressbar
 fi
 
 cd /tmp
@@ -94,15 +94,30 @@ then
 fi
 
 #Office tools
-echo "Install Atom text editor?"
-read -r -p "Your choice [y/N] " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+
+if IsPkgInstalled nano
 then
-    sudo pacman -S atom --needed --noconfirm --noprogressbar
-else
-    :
+  echo "Install nano CLI text editor?"
+  read -r -p "Your choice [y/N] " response
+  if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+  then
+      sudo pacman -Sq nano --noconfirm --noprogressbar
+  else
+      :
+  fi
 fi
 
+if IsPkgInstalled atom
+then
+  echo "Install Atom GUI text editor?"
+  read -r -p "Your choice [y/N] " response
+  if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+  then
+      sudo pacman -Sq atom --noconfirm --noprogressbar
+  else
+      :
+  fi
+fi
 
 #Internet tools
 #pacman -S firefox --noconfirm
