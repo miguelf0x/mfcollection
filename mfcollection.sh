@@ -42,14 +42,14 @@ InstallIfNotExist()
    then
      if Verbose=1
      then
-       echo "Package $packageName is already installed!"
+       echo "Package $Package is already installed!"
      fi
    else
      if Verbose=1
      then
-       sudo pacman -Sq "$packageName" --noconfirm  --noprogressbar
+       sudo pacman -Sq "$Package" --noconfirm  --noprogressbar
      else
-       sudo pacman -Sq "$packageName" --noconfirm  --noprogressbar > /dev/null
+       sudo pacman -Sq "$Package" --noconfirm  --noprogressbar > /dev/null
      fi
    fi
 }
