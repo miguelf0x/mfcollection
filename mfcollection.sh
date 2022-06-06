@@ -93,6 +93,7 @@ fi
 InstallIfNotExist git
 InstallIfNotExist curl
 InstallIfNotExist base-devel
+InstallIfNotExist atop
 
 #if Verbose=1
 #then
