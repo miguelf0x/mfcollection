@@ -4,7 +4,7 @@
 # Vars                                                     #
 ############################################################
 
-Verbose=0
+Verbose=false
 
 ############################################################
 # Help                                                     #
@@ -41,12 +41,12 @@ InstallIfNotExist()
    echo $package
    if sudo pacman -Qs "$packageName" > /dev/null
    then
-     if $Verbose=1
+     if $Verbose=true
      then
        echo "Package $package is already installed!"
      fi
    else
-     if $Verbose=1
+     if $Verbose=true
      then
        sudo pacman -Sq "$package" --noconfirm  --noprogressbar
      else
@@ -73,7 +73,7 @@ while getopts ":hv:" option; do
    esac
 done
 
-if Verbose=1
+if Verbose=true
 then
   echo "1. Updating system"
   sudo pacman -Syyu --noconfirm --noprogressbar
@@ -129,7 +129,7 @@ sudo chown -R $USER yay
 cd yay
 makepkg -si --noconfirm --noprogressbar
 
-if Verbose=1
+if Verbose=true
 then
   echo "4. Installing optional packages"
 fi
