@@ -51,10 +51,6 @@ InstallIfNotExist()
      else
        sudo pacman -Sq "$packageName" --noconfirm  --noprogressbar > /dev/null
      fi
-       sudo pacman -Sq $Package --noconfirm  --noprogressbar
-     fi
-   else
-     sudo pacman -Sq $Package --noconfirm  --noprogressbar > /dev/null
    fi
 }
 
