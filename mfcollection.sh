@@ -66,7 +66,7 @@ while getopts ":hv:" option; do
          Help
          exit;;
       v) # Enter a name
-         Verbose=1;;
+         Verbose=true;;
      \?) # Invalid option
          echo "Error: Invalid option"
          exit;;
