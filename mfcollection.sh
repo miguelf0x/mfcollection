@@ -73,7 +73,7 @@ while getopts ":hv:" option; do
    esac
 done
 
-if $Verbose=false
+if $Verbose
 then
   echo "1. Updating system"
   sudo pacman -Syyu --noconfirm --noprogressbar
@@ -129,7 +129,7 @@ sudo chown -R $USER yay
 cd yay
 makepkg -si --noconfirm --noprogressbar
 
-if $Verbose=false
+if $Verbose
 then
   echo "4. Installing optional packages"
 fi
