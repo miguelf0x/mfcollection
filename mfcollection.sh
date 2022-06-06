@@ -32,16 +32,6 @@ IsPkgInstalled()
 }
 
 ############################################################
-# SysUpdAndClean                                           #
-############################################################
-
-SysUpdAndClean()
-{
-   sudo pacman -Syyu --noconfirm --noprogressbar
-   sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
-}
-
-############################################################
 # Main code                                                #
 ############################################################
 
@@ -65,7 +55,8 @@ then
   echo "2. Removing unneeded packages"
   sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
 else
-  SysUpdAndClean > /dev/null
+  sudo pacman -Syyu --noconfirm --noprogressbar > /dev/null
+  sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar > /dev/null
 fi
 
 if Verbose=1
