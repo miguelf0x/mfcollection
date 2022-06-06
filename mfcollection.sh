@@ -41,12 +41,12 @@ InstallIfNotExist()
    echo $package
    if sudo pacman -Qs "$packageName" > /dev/null
    then
-     if Verbose
+     if $Verbose
      then
        echo "Package $package is already installed!"
      fi
    else
-     if Verbose
+     if $Verbose
      then
        sudo pacman -Sq "$package" --noconfirm  --noprogressbar
      else
@@ -62,10 +62,10 @@ InstallIfNotExist()
 
 while getopts ":hv:" option; do
    case $option in
-      h) # display Help
+      h) # Show help
          Help
          exit;;
-      v) # Enter a name
+      v) # Verbose mode
          Verbose=false;;
      \?) # Invalid option
          echo "Error: Invalid option"
