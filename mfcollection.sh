@@ -4,7 +4,7 @@
 # Vars                                                     #
 ############################################################
 
-Verbose=false
+Verbose=true
 
 ############################################################
 # Help                                                     #
@@ -66,7 +66,7 @@ while getopts ":hv:" option; do
          Help
          exit;;
       v) # Enter a name
-         Verbose=true;;
+         Verbose=false;;
      \?) # Invalid option
          echo "Error: Invalid option"
          exit;;
