@@ -107,7 +107,7 @@ then
   read -r -p "Your choice [y/N] " response
   if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
   then
-      sudo pacman -Sq nano --noconfirm --noprogressbar
+      sudo pacman -S nano --noconfirm --noprogressbar
   else
       :
   fi
@@ -119,7 +119,7 @@ then
   read -r -p "Your choice [y/N] " response
   if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
   then
-      sudo pacman -Sq atom --noconfirm --noprogressbar
+      sudo pacman -S atom --noconfirm --noprogressbar
   else
       :
   fi
