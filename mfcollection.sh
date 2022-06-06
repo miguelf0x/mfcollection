@@ -32,6 +32,16 @@ IsPkgInstalled()
 }
 
 ############################################################
+# SysUpdAndClean                                           #
+############################################################
+
+SysUpdAndClean()
+{
+   sudo pacman -Syyu --noconfirm --noprogressbar
+   sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
+}
+
+############################################################
 # Main code                                                #
 ############################################################
 
@@ -51,36 +61,41 @@ done
 if Verbose=1
 then
   echo "1. Updating system"
-fi
-
-sudo pacman -Syyuq --noconfirm --noprogressbar
-
-if Verbose=1
-then
+  sudo pacman -Syyu --noconfirm --noprogressbar
   echo "2. Removing unneeded packages"
+  sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
+else
+  SysUpdAndClean > /dev/null
 fi
-
-sudo pacman -Rnsq $(pacman -Qdtq) --noconfirm  --noprogressbar
 
 if Verbose=1
 then
   echo "3. Installing basic development tools"
-fi
-
-if IsPkgInstalled git
-then
-  sudo pacman -Sq git --noconfirm  --noprogressbar
-fi
-
-if IsPkgInstalled curl
-then
-  sudo pacman -Sq curl --noconfirm  --noprogressbar
-fi
-
-if IsPkgInstalled base-devel
-then
-  sudo pacman -Sq base-devel --noconfirm  --noprogressbar
-fi
+  if IsPkgInstalled git
+  then
+    sudo pacman -S git --noconfirm  --noprogressbar
+  fi
+  if IsPkgInstalled curl
+  then
+    sudo pacman -S curl --noconfirm  --noprogressbar
+  fi
+  if IsPkgInstalled base-devel
+  then
+    sudo pacman -Sq base-devel --noconfirm  --noprogressbar
+  fi
+else
+  if IsPkgInstalled git
+  then
+    sudo pacman -S git --noconfirm  --noprogressbar > /dev/null
+  fi
+  if IsPkgInstalled curl
+  then
+    sudo pacman -S curl --noconfirm  --noprogressbar > /dev/null
+  fi
+  if IsPkgInstalled base-devel
+  then
+    sudo pacman -S base-devel --noconfirm  --noprogressbar > /dev/null
+  fi
 
 cd /tmp
 git clone https://aur.archlinux.org/yay.git
