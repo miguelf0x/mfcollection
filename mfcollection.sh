@@ -73,7 +73,7 @@ while getopts ":hv:" option; do
    esac
 done
 
-if $Verbose=1
+if $Verbose
 then
   echo "1. Updating system"
   sudo pacman -Syyu --noconfirm --noprogressbar
