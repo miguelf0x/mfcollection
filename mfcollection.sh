@@ -63,15 +63,15 @@ case $Verbose in
     1) # Verbose mode is OFF
         sudo pacman -Syyu --noconfirm --noprogressbar > /dev/null
         sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar > /dev/null
-        if !IsPkgInstalled git
+        if IsPkgInstalled git
         then
           sudo pacman -S git --noconfirm  --noprogressbar > /dev/null
         fi
-        if !IsPkgInstalled curl
+        if IsPkgInstalled curl
         then
           sudo pacman -S curl --noconfirm  --noprogressbar > /dev/null
         fi
-        if !IsPkgInstalled base-devel
+        if IsPkgInstalled base-devel
         then
           sudo pacman -S base-devel --noconfirm  --noprogressbar > /dev/null
         fi
@@ -87,15 +87,15 @@ case $Verbose in
         echo "2. Removing unrequired packages"
         sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
         echo "3. Installing basic development tools"
-        if !IsPkgInstalled git
+        if IsPkgInstalled git
         then
           sudo pacman -S git --noconfirm  --noprogressbar
         fi
-        if !IsPkgInstalled curl
+        if IsPkgInstalled curl
         then
           sudo pacman -S curl --noconfirm  --noprogressbar
         fi
-        if !IsPkgInstalled base-devel
+        if IsPkgInstalled base-devel
         then
           sudo pacman -S base-devel --noconfirm  --noprogressbar
         fi
