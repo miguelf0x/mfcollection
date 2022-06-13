@@ -131,6 +131,15 @@ case $Tweaking in
             echo "5. Tweaking system"
         fi
         cd /tmp
+        echo "############################" >> 90-override.conf.tmp
+        echo "# This config is generated #" >> 90-override.conf.tmp
+        echo "#  by mfcollection script  #" >> 90-override.conf.tmp
+        echo "############################" >> 90-override.conf.tmp
+        echo "" >> 90-override.conf.tmp
+        echo "############################" >> 90-override.conf.tmp
+        echo "#  USE AT YOUR OWN RISK !  #" >> 90-override.conf.tmp
+        echo "############################" >> 90-override.conf.tmp
+        echo "" >> 90-override.conf.tmp
         echo "Enable SysRq key?"
         read -r -p "Your choice [y/N] " response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
@@ -167,13 +176,14 @@ case $Tweaking in
             :
         fi
         echo "Are these options correct?"
-        echo "##############################"
+        echo
         cat 90-override.conf.tmp
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
             cp 90-override.conf.tmp /etc/sysctl.d/90-override.conf
+            rm 90-override.conf.tmp
         else
-            :
+            rm 90-override.conf.tmp
         fi
         ;;
 esac
