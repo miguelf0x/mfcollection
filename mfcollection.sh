@@ -136,17 +136,16 @@ case $Tweaking in
         echo "#           USE ONLY AT YOUR OWN RISK !           #" >> 90-override.conf.tmp
         echo "###################################################" >> 90-override.conf.tmp
         echo "" >> 90-override.conf.tmp
-        echo "Enable SysRq key?"
-        read -r -p "Your choice [y/N] " response
+        read -r -p "Enable SysRq key? [y/N] " response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
             echo "# Enable SysRq key combinations" >> 90-override.conf.tmp
             echo "kernel.sysrq=1" >> 90-override.conf.tmp
+            echo "" >> 90-override.conf.tmp
         else
             :
         fi
-        echo "Change vm.swappiness to optimum value?"
-        read -r -p "Your choice [y/N] " response
+        read -r -p "Change vm.swappiness to optimum value? [y/N] " response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
             memf=$(awk '/MemTotal/ { printf "%.3f \n", $2/1024 }' /proc/meminfo)
@@ -170,13 +169,13 @@ case $Tweaking in
             fi
             echo "# Aggressiveness of swapping [Higher means more swappy]" >> 90-override.conf.tmp
             echo "vm.swappiness = $swappiness_opt" >> 90-override.conf.tmp
+            echo "" >> 90-override.conf.tmp
         else
             :
         fi
         echo
         cat 90-override.conf.tmp
-        echo "Are these options correct?"
-        read -r response
+        read -r -p "Are these options correct? [y/N] " response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
             cp 90-override.conf.tmp /etc/sysctl.d/90-override.conf
