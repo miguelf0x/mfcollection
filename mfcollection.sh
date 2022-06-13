@@ -147,7 +147,7 @@ case $Tweaking in
             if [[ "$mem" -le 512 ]];
             then
                 $swappiness_opt=60
-            elif [[ "$mem" -gt 512]] && [[ "$mem" -le 2048 ]];
+            elif [[ "$mem" -gt 512 && "$mem" -le 2048 ]];
             then
                 $swappiness_opt=50
             elif [[ "$mem" -gt 2048 && "$mem" -le 8192 ]];
