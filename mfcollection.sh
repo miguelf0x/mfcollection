@@ -51,7 +51,7 @@ VALID_ARGUMENTS=$#
 
 eval set -- "$OPTS"
 
-while :
+while [ "$1" != "--" ];
 do
   case "$1" in
     -h | --help)
@@ -65,9 +65,6 @@ do
     -t|--tweak) # Tweaking mode
         Tweaking=0
         shift 2
-        ;;
-    --)
-        shift
         ;;
   esac
 done
