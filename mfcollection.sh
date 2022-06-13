@@ -149,9 +149,7 @@ case $Tweaking in
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
             memf=$(awk '/MemTotal/ { printf "%.3f \n", $2/1024 }' /proc/meminfo)
-            echo $memf
             mem=${memf/.*} ## convert float to int
-            echo $mem
             if [[ $mem -le 512 ]];
             then
                 swappiness_opt=60
