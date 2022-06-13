@@ -144,16 +144,16 @@ case $Tweaking in
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
             mem=$(awk '/MemFree/ { printf "%.3f \n", $2/1024/1024 }' /proc/meminfo)
-            if (($mem<=512))
+            if [[ "$mem" -le 512 ]];
             then
                 $swappiness_opt = 60
-            elif ((512<$mem && $mem<=2048))
+            elif [[ "$mem" -gt 512 && "$mem" -le 2048 ]];
             then
                 $swappiness_opt = 50
-            elif ((2048<$mem && $mem<=8192))
+            elif [[ "$mem" -gt 2048 && "$mem" -le 8192 ]];
             then
                 $swappiness_opt = 40
-            elif ((8192<$mem && $mem<=16384))
+            elif [[ "$mem" -gt 8192 && "$mem" -le 16384 ]];
             then
                 $swappiness_opt = 20
             else
