@@ -49,11 +49,16 @@ do
     case "$1" in
         -h|--help)
             Help
-            exit;;
+            exit
+            ;;
         -v|--verbose)
-            Verbose=0;;
+            Verbose=0
+            shift
+            ;;
         -t|--tweak) # Tweaking mode
-            Tweaking=0;;
+            Tweaking=0
+            shift
+            ;;
         \?)
             echo "Error: Invalid option"
             exit;;
