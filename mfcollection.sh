@@ -31,7 +31,13 @@ Help()
 
 IsPkgInstalled()
 {
-   sudo pacman -Qs "$packageName" > /dev/null
+   local res = $(sudo pacman -Qs "$packageName" > /dev/null)
+   if $res=1
+   then
+     return 0
+   else
+     return 1
+   fi
 }
 
 ############################################################
@@ -46,7 +52,7 @@ while getopts ":hvt:" option; do
       v) # Verbose mode
          Verbose=0;;
       t) # Tweaking mode
-          Verbose=0;;
+         Tweaking=0;;
      \?) # Invalid option
          echo "Error: Invalid option"
          exit;;
