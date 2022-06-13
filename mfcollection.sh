@@ -110,13 +110,13 @@ esac
 
 case $Tweaking in
     1) #Tweaking is disabled
-        if $Verbose
+        if [[ "$Verbose" -eq 0 ]];
         then
             echo "Skipping step 5: Tweaking disabled"
         fi
         ;;
     0) #Tweaking is enabled
-        if $Verbose
+        if [[ "$Verbose" -eq 0 ]];
         then
             echo "5. Tweaking system"
         fi
