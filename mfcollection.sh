@@ -32,7 +32,7 @@ Help()
 IsPkgInstalled()
 {
    local res=$(sudo pacman -Qs "$packageName" > /dev/null)
-   if $res=1
+   if [[$res -eq 1]]
    then
      return 0
    else
