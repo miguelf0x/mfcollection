@@ -31,7 +31,7 @@ Help()
 
 IsPkgInstalled()
 {
-   local res = $(sudo pacman -Qs "$packageName" > /dev/null)
+   local res=$(sudo pacman -Qs "$packageName" > /dev/null)
    if $res=1
    then
      return 0
