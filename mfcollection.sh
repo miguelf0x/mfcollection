@@ -178,6 +178,7 @@ case $Tweaking in
         echo
         cat 90-override.conf.tmp
         echo "Are these options correct?"
+        read -r response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
             cp 90-override.conf.tmp /etc/sysctl.d/90-override.conf
