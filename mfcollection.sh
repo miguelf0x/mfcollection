@@ -143,7 +143,7 @@ case $Tweaking in
         read -r -p "Your choice [y/N] " response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
-            memf=$(awk '/MemTotal/ { printf "%.3f \n", $2/1024/1024 }' /proc/meminfo)
+            memf=$(awk '/MemTotal/ { printf "%.3f \n", $2/1024 }' /proc/meminfo)
             echo $memf
             mem=${memf/.*} ## convert float to int
             echo $mem
