@@ -44,7 +44,7 @@ IsPkgInstalled()
 # Main code                                                #
 ############################################################
 
-while getopts ":hvt:" option; do
+while getopts ":h:v:t:" option; do
    case $option in
       h) # display Help
          Help
@@ -76,7 +76,7 @@ case $Verbose in
           sudo pacman -S base-devel --noconfirm  --noprogressbar > /dev/null
         fi
         cd /tmp
-        git clone https://aur.archlinux.org/yay.git > /dev/null
+        git clone https://aur.archlinux.org/yay.git >> /dev/null
         sudo chown -R $USER yay > /dev/null
         cd yay
         makepkg -si --noconfirm --noprogressbar > /dev/null
