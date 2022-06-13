@@ -110,8 +110,16 @@ esac
 
 case $Tweaking in
     1) #Tweaking is disabled
+        if $Verbose
+        then
+            echo "Skipping step 5: Tweaking disabled"
+        fi
         ;;
     0) #Tweaking is enabled
+        if $Verbose
+        then
+            echo "5. Tweaking system"
+        fi
         cd /tmp
         echo "Enable SysRq key?"
         read -r -p "Your choice [y/N] " response
