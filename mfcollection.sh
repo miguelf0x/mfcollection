@@ -146,18 +146,18 @@ case $Tweaking in
             mem=$(awk '/MemFree/ { printf "%.3f \n", $2/1024/1024 }' /proc/meminfo)
             if [[ "$mem" -le 512 ]];
             then
-                $swappiness_opt = 60
-            elif [[ "$mem" -gt 512 && "$mem" -le 2048 ]];
+                $swappiness_opt=60
+            elif [[ "$mem" -gt 512]] && [[ "$mem" -le 2048 ]];
             then
-                $swappiness_opt = 50
+                $swappiness_opt=50
             elif [[ "$mem" -gt 2048 && "$mem" -le 8192 ]];
             then
-                $swappiness_opt = 40
+                $swappiness_opt=40
             elif [[ "$mem" -gt 8192 && "$mem" -le 16384 ]];
             then
-                $swappiness_opt = 20
+                $swappiness_opt=20
             else
-                $swappiness_opt = 10
+                $swappiness_opt=10
             fi
             echo "vm.swappiness = $swappiness_opt" >> 90-override.conf.tmp
         else
