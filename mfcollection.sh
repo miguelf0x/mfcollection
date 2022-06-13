@@ -60,11 +60,11 @@ do
         ;;
     -v|--verbose)
         Verbose=0
-        shift 2
+        shift
         ;;
     -t|--tweak) # Tweaking mode
         Tweaking=0
-        shift 2
+        shift
         ;;
   esac
 done
