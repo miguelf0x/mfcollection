@@ -69,10 +69,6 @@ do
     --)
         shift
         ;;
-    *)
-      echo "Unexpected option: $1"
-      exit
-      ;;
   esac
 done
 
