@@ -120,13 +120,13 @@ esac
 
 case $Tweaking in
     1) #Tweaking is disabled
-        if [[ "$Verbose" -eq 0 ]];
+        if [[ $Verbose -eq 0 ]];
         then
             echo "Skipping step 5: Tweaking disabled"
         fi
         ;;
     0) #Tweaking is enabled
-        if [[ "$Verbose" -eq 0 ]];
+        if [[ $Verbose -eq 0 ]];
         then
             echo "5. Tweaking system"
         fi
@@ -143,17 +143,17 @@ case $Tweaking in
         read -r -p "Your choice [y/N] " response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
-            mem=$(awk '/MemFree/ { printf "%.3f \n", $2/1024/1024 }' /proc/meminfo)
-            if [[ "$mem" -le 512 ]];
+            mem=$(awk '/MemTotal/ { printf "%.3f \n", $2/1024/1024 }' /proc/meminfo)
+            if [[ $mem -le 512.0 ]];
             then
                 swappiness_opt=60
-            elif [[ "$mem" -gt 512 && "$mem" -le 2048 ]];
+            elif [[ $mem -gt 512.0 && $mem -le 2048.0 ]];
             then
                 swappiness_opt=50
-            elif [[ "$mem" -gt 2048 && "$mem" -le 8192 ]];
+            elif [[ $mem -gt 2048.0 && $mem -le 8192.0 ]];
             then
                 swappiness_opt=40
-            elif [[ "$mem" -gt 8192 && "$mem" -le 16384 ]];
+            elif [[ $mem -gt 8192.0 && $mem -le 16384.0 ]];
             then
                 swappiness_opt=20
             else
