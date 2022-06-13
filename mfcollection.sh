@@ -44,19 +44,21 @@ IsPkgInstalled()
 # Main code                                                #
 ############################################################
 
-while getopts ":h:v:t:" option; do
-   case $option in
-      h) # display Help
-         Help
-         exit;;
-      v) # Verbose mode
-         Verbose=0;;
-      t) # Tweaking mode
-         Tweaking=0;;
-     \?) # Invalid option
-         echo "Error: Invalid option"
-         exit;;
-   esac
+while [[ $# > 0 ]]
+do
+    case "$1" in
+        -h|--help)
+            Help
+            exit;;
+        -v|--verbose)
+            Verbose=0;;
+        -t|--tweak) # Tweaking mode
+            Tweaking=0;;
+        \?)
+            echo "Error: Invalid option"
+            exit;;
+    esac
+    shift
 done
 
 case $Verbose in
