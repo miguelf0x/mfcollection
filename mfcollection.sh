@@ -178,6 +178,8 @@ case $Tweaking in
         read -r -p "Are these options correct? [y/N] " response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
+            current_date=$(date)
+            echo "# Created at $current_date" >> 90-override.conf.tmp
             cp 90-override.conf.tmp /etc/sysctl.d/90-override.conf
             rm 90-override.conf.tmp
         else
