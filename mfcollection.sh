@@ -143,17 +143,18 @@ case $Tweaking in
         read -r -p "Your choice [y/N] " response
         if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
         then
-            mem=$(awk '/MemTotal/ { printf "%.3f \n", $2/1024/1024 }' /proc/meminfo)
-            if [[ $mem -le 512.0 ]];
+            memf=$(awk '/MemTotal/ { printf "%.3f \n", $2/1024/1024 }' /proc/meminfo)
+            mem=${memf/.*}
+            if [[ $mem -le 512 ]];
             then
                 swappiness_opt=60
-            elif [[ $mem -gt 512.0 && $mem -le 2048.0 ]];
+            elif [[ $mem -gt 512 && $mem -le 2048 ]];
             then
                 swappiness_opt=50
-            elif [[ $mem -gt 2048.0 && $mem -le 8192.0 ]];
+            elif [[ $mem -gt 2048 && $mem -le 8192 ]];
             then
                 swappiness_opt=40
-            elif [[ $mem -gt 8192.0 && $mem -le 16384.0 ]];
+            elif [[ $mem -gt 8192 && $mem -le 16384 ]];
             then
                 swappiness_opt=20
             else
