@@ -44,26 +44,36 @@ IsPkgInstalled()
 # Main code                                                #
 ############################################################
 
-while [[ $# > 0 ]]
+SHORT=h,v,t
+LONG=help,verbose,tweak
+OPTS=$(getopt -a -n mfcollection --options $SHORT --longoptions $LONG -- "$@")
+VALID_ARGUMENTS=$#
+
+eval set -- "$OPTS"
+
+while :
 do
-    case "$1" in
-        -h|--help)
-            Help
-            exit
-            ;;
-        -v|--verbose)
-            Verbose=0
-            shift
-            ;;
-        -t|--tweak) # Tweaking mode
-            Tweaking=0
-            shift
-            ;;
-        \?)
-            echo "Error: Invalid option"
-            exit;;
-    esac
-    shift
+  case "$1" in
+    -h | --help)
+        Help
+        exit
+        ;;
+    -v|--verbose)
+        Verbose=0
+        shift 2
+        ;;
+    -t|--tweak) # Tweaking mode
+        Tweaking=0
+        shift 2
+        ;;
+    --)
+        shift
+        ;;
+    *)
+      echo "Unexpected option: $1"
+      exit
+      ;;
+  esac
 done
 
 case $Verbose in
