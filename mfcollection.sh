@@ -40,6 +40,20 @@ IsPkgInstalled()
 }
 
 ############################################################
+# WriteSchedConfig: writes optimal scheduler config        #
+############################################################
+
+WriteSchedConfig()
+{
+echo "# set scheduler for NVMe" > /etc/udev/rules.d/60-ioschedulers.rules
+echo "ACTION==\"add|change\", KERNEL==\"nvme[0-9]*\", ATTR{queue/scheduler}=\"none\"" >> /etc/udev/rules.d/60-ioschedulers.rules
+echo "# set scheduler for eMMC" >> /etc/udev/rules.d/60-ioschedulers.rules
+echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]|mmcblk[0-9]*\", ATTR{queue/rotational}==\"0\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
+echo "# set scheduler for rotating disks" >> /etc/udev/rules.d/60-ioschedulers.rules
+echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
+}
+
+############################################################
 # Main code                                                #
 ############################################################
 
@@ -182,20 +196,10 @@ case $Tweaking in
                 echo "$FILE already exists. Rewrite? [y/N]" response2
                 if [[ "$response2" =~ ^([yY][eE][sS]|[yY])$ ]]
                 then
-                    echo "# set scheduler for NVMe" > /etc/udev/rules.d/60-ioschedulers.rules
-                    echo "ACTION==\"add|change\", KERNEL==\"nvme[0-9]*\", ATTR{queue/scheduler}=\"none\"" >> /etc/udev/rules.d/60-ioschedulers.rules
-                    echo "# set scheduler for eMMC" >> /etc/udev/rules.d/60-ioschedulers.rules
-                    echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]|mmcblk[0-9]*\", ATTR{queue/rotational}==\"0\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
-                    echo "# set scheduler for rotating disks" >> /etc/udev/rules.d/60-ioschedulers.rules
-                    echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
+                    WriteSchedConfig
                 fi
             else
-                echo "# set scheduler for NVMe" > /etc/udev/rules.d/60-ioschedulers.rules
-                echo "ACTION==\"add|change\", KERNEL==\"nvme[0-9]*\", ATTR{queue/scheduler}=\"none\"" >> /etc/udev/rules.d/60-ioschedulers.rules
-                echo "# set scheduler for eMMC" >> /etc/udev/rules.d/60-ioschedulers.rules
-                echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]|mmcblk[0-9]*\", ATTR{queue/rotational}==\"0\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
-                echo "# set scheduler for rotating disks" >> /etc/udev/rules.d/60-ioschedulers.rules
-                echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
+                WriteSchedConfig
             fi
             echo "# IO schedulers cfg is located at /etc/udev/rules.d/60-ioschedulers.rules " >> 90-override.conf.tmp
             echo "" >> 90-override.conf.tmp
