@@ -35,15 +35,15 @@ Tweaking=1    #disabled by default
 
 Help()
 {
-   echo -e "This script is designed for automation of installing some necessary packages
-   Sudo is required for normal operation
-   ${RED}Script should not be run as root${NC}\n
-   Syntax: mfcollection [-h|v|V|t]
-   Options:
-   h     Print this help.
-   v     Verbose mode.
-   V     Print script version.
-   t     Enable tweaking stage.\n"
+  echo -e "This script is designed for automation of installing some necessary packages
+Sudo is required for normal operation
+${RED}Script should not be run as root${NC}\n
+Syntax: mfcollection [-h|v|V|t]
+Options:
+h     Print this help.
+v     Verbose mode.
+V     Print script version.
+t     Enable tweaking stage.\n"
 }
 
 
@@ -54,7 +54,7 @@ Help()
 Version()
 {
   echo -e "mfcollection.sh
-  Version a004 250622"
+Version a004 250622"
 }
 
 
@@ -102,12 +102,12 @@ InstallIfNotExist()
 
 WriteSchedConfig()
 {
-  echo "# set scheduler for NVMe" > /etc/udev/rules.d/60-ioschedulers.rules
-  echo "ACTION==\"add|change\", KERNEL==\"nvme[0-9]*\", ATTR{queue/scheduler}=\"none\"" >> /etc/udev/rules.d/60-ioschedulers.rules
-  echo "# set scheduler for eMMC and SSD" >> /etc/udev/rules.d/60-ioschedulers.rules
-  echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]|mmcblk[0-9]*\", ATTR{queue/rotational}==\"0\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
-  echo "# set scheduler for rotating disks" >> /etc/udev/rules.d/60-ioschedulers.rules
-  echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
+  sudo echo -e "# set scheduler for NVMe
+ACTION==\"add|change\", KERNEL==\"nvme[0-9]*\", ATTR{queue/scheduler}=\"none\"
+# set scheduler for eMMC and SSD
+ACTION==\"add|change\", KERNEL==\"sd[a-z]|mmcblk[0-9]*\", ATTR{queue/rotational}==\"0\", ATTR{queue/scheduler}=\"bfq\"
+# set scheduler for rotating disks
+ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
 }
 
 
