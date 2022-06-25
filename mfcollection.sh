@@ -49,34 +49,40 @@ Help()
 Version()
 {
     echo "mfcollection.sh"
-    echo "Version a002 250622"
+    echo "Version a003 250622"
 }
 
 
 ################################################################################
-# IsPkgInstalled: checks if package is installed                               #
+# InstallIfNotExist: installs multiple packages if necessary                   #
 ################################################################################
 
-IsPkgInstalled()
+InstallIfNotExist()
 {
-   local res=$(sudo pacman -Qs "$packageName" > /dev/null)
-   if [[ "$res" -eq 1 ]];
-   then
-     return 0
-   else
-     return 1
-   fi
+  for i in "${RequiredPackages[@]}"
+  do
+    if sudo pacman -Qs "$i" > /dev/null
+    then
+      if $Verbose
+      then
+        echo "$i is already installed, skipping..."
+      fi
+    else
+      if $Verbose
+      then
+        echo "$i is added to queue..."
+      fi
+      local $PackageList+=$i
+  done
+
+  if $Verbose
+  then
+    sudo pacman -S $PackageList --noconfirm --noprogressbar
+  else
+    sudo pacman -S $PackageList --noconfirm --noprogressbar > /dev/null
+  fi
 }
 
-
-################################################################################
-# InstallPackages: installs multiple packages                                  #
-################################################################################
-
-InstallPackages()
-{
-  sudo pacman -S $PackageList --noconfirm --noprogressbar
-}
 
 ################################################################################
 # WriteSchedConfig: writes optimal IO scheduler config                         #
@@ -84,12 +90,12 @@ InstallPackages()
 
 WriteSchedConfig()
 {
-echo "# set scheduler for NVMe" > /etc/udev/rules.d/60-ioschedulers.rules
-echo "ACTION==\"add|change\", KERNEL==\"nvme[0-9]*\", ATTR{queue/scheduler}=\"none\"" >> /etc/udev/rules.d/60-ioschedulers.rules
-echo "# set scheduler for eMMC and SSD" >> /etc/udev/rules.d/60-ioschedulers.rules
-echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]|mmcblk[0-9]*\", ATTR{queue/rotational}==\"0\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
-echo "# set scheduler for rotating disks" >> /etc/udev/rules.d/60-ioschedulers.rules
-echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
+  echo "# set scheduler for NVMe" > /etc/udev/rules.d/60-ioschedulers.rules
+  echo "ACTION==\"add|change\", KERNEL==\"nvme[0-9]*\", ATTR{queue/scheduler}=\"none\"" >> /etc/udev/rules.d/60-ioschedulers.rules
+  echo "# set scheduler for eMMC and SSD" >> /etc/udev/rules.d/60-ioschedulers.rules
+  echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]|mmcblk[0-9]*\", ATTR{queue/rotational}==\"0\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
+  echo "# set scheduler for rotating disks" >> /etc/udev/rules.d/60-ioschedulers.rules
+  echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
 }
 
 
@@ -98,7 +104,7 @@ echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\"
 ################################################################################
 
 SHORT=h,v,V,t
-LONG=help,verbose,verstion,tweak
+LONG=help,verbose,version,tweak
 OPTS=$(getopt -a -n mfcollection --options $SHORT --longoptions $LONG -- "$@")
 VALID_ARGUMENTS=$#
 
@@ -154,19 +160,8 @@ case $Verbose in
         echo "2. Removing unrequired packages"
         sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
         echo "3. Installing basic development tools"
-        if IsPkgInstalled git
-        then
-          $PackageList += "git"
-        fi
-        if IsPkgInstalled curl
-        then
-          $PackageList += "curl"
-        fi
-        if IsPkgInstalled base-devel
-        then
-          $PackageList += "base-devel"
-        fi
-        InstallPackages
+        $RequiredPackages=("git","curl","base-devel")
+        InstallIfNotExist()
         echo "4. Installing yay"
         cd /tmp
         git clone https://aur.archlinux.org/yay.git
