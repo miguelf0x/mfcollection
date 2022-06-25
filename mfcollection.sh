@@ -1,23 +1,29 @@
 #!/usr/bin/env bash
 
-###############################################################################
-#                             mfcollection script                             #
-#                                                                             #
-#  This script is designed for faster completion of Archlinux based systems.  #
-#  Currently implemented functions are:                                       #
-#     Updating system                                                         #
-#     Removing unrequired packages                                            #
-#     Installing git, curl, base-devel (required for yay compiling)           #
-#     Enabling SysRq key combinations                                         #
-#     Changing vm.swappiness value to optimal one (depending on RAM size)     #
-#     Changing IO schedulers to optimal ones (depending on drive type)        #
-#                                                                             #
-###############################################################################
+################################################################################
+#                             mfcollection script                              #
+#                                                                              #
+#    This script is designed for faster personalization and tweaking of        #
+#    Archlinux-based systems.                                                  #
+#    Currently implemented functions are:                                      #
+#       Updating system                                                        #
+#       Removing unrequired packages                                           #
+#       Installing git, curl, base-devel (required for yay compiling)          #
+#       Enabling SysRq key combinations                                        #
+#       Changing vm.swappiness value to optimal one (depending on RAM size)    #
+#       Changing IO schedulers to optimal ones (depending on drive type)       #
+#                                                                              #
+################################################################################
 
 
 ###############################################################################
 # Variables                                                                   #
 ###############################################################################
+
+NC='\033[0m'        # No color
+BLK='\033[0;30m'    # Black
+RED='\033[0;31m'    # Red
+GRN='\033[0;32m'    # Green
 
 Verbose=1     #disabled by default
 Tweaking=1    #disabled by default
@@ -29,14 +35,15 @@ Tweaking=1    #disabled by default
 
 Help()
 {
-   echo "This script is designed for automatisation of installing some necessary packages"
-   echo "Script should not be run as root"
+   echo "This script is designed for automation of installing some necessary packages"
+   echo -e "${RED}Script should not be run as root${NC}"
    echo
-   echo "Syntax: mfcollection [-v|h|t]"
+   echo "Syntax: mfcollection [-h|v|V|t]"
    echo "Options:"
    echo "h     Print this help."
    echo "v     Verbose mode."
-   echo "t     Applies minor tweaks to system"
+   echo "V     Print script version."
+   echo "t     Enable tweaking stage."
    echo
 }
 
@@ -48,7 +55,7 @@ Help()
 Version()
 {
     echo "mfcollection.sh"
-    echo "Version a003 250622"
+    echo "Version a004 250622"
 }
 
 
@@ -138,22 +145,17 @@ do
   esac
 done
 
+if [[ $EUID -eq 0 ]]; then
+  echo -e "${RED}This script should not be run as root!${NC}"
+  exit
+fi
+
 case $Verbose in
     1) # Verbose mode is OFF
         sudo pacman -Syyu --noconfirm --noprogressbar > /dev/null
         sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar > /dev/null
-        if IsPkgInstalled git
-        then
-          sudo pacman -S git --noconfirm  --noprogressbar > /dev/null
-        fi
-        if IsPkgInstalled curl
-        then
-          sudo pacman -S curl --noconfirm  --noprogressbar > /dev/null
-        fi
-        if IsPkgInstalled base-devel
-        then
-          sudo pacman -S base-devel --noconfirm  --noprogressbar > /dev/null
-        fi
+        RequiredPackages=("git" "curl" "base-devel")
+        InstallIfNotExist
         cd /tmp
         git clone https://aur.archlinux.org/yay.git >> /dev/null
         sudo chown -R $USER yay > /dev/null
@@ -161,14 +163,14 @@ case $Verbose in
         makepkg -si --noconfirm --noprogressbar > /dev/null
         ;;
     0) # Verbose mode is ON
-        echo "1. Updating system"
+        echo -e "${GRN}1. Updating system${NC}"
         sudo pacman -Syyu --noconfirm --noprogressbar
-        echo "2. Removing unrequired packages"
+        echo -e "${GRN}2. Removing unrequired packages${NC}"
         sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
-        echo "3. Installing basic development tools"
+        echo -e "${GRN}3. Installing base development tools${NC}"
         RequiredPackages=("git" "curl" "base-devel")
         InstallIfNotExist
-        echo "4. Installing yay"
+        echo -e "${GRN}4. Installing yay${NC}"
         cd /tmp
         git clone https://aur.archlinux.org/yay.git
         sudo chown -R $USER yay
@@ -181,13 +183,13 @@ case $Tweaking in
     1) #Tweaking is disabled
         if [[ $Verbose -eq 0 ]];
         then
-            echo "Skipping step 5: Tweaking disabled"
+            echo -e "${GRN}Skipping step 5: Tweaking disabled${NC}"
         fi
         ;;
     0) #Tweaking is enabled
         if [[ $Verbose -eq 0 ]];
         then
-            echo "5. Tweaking system"
+            echo -e "${GRN}5. Tweaking system${NC}"
         fi
 
         cd /tmp
@@ -239,7 +241,7 @@ case $Tweaking in
         then
             FILE=/etc/udev/rules.d/60-ioschedulers.rules
             if test -f "$FILE"; then
-                echo "'$FILE' already exists. Rewrite? [y/N]" response2
+                read -r -p "$FILE already exists. Rewrite? [y/N]" response2
                 if [[ "$response2" =~ ^([yY][eE][sS]|[yY])$ ]]
                 then
                     WriteSchedConfig
