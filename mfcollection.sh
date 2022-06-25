@@ -21,7 +21,6 @@
 
 Verbose=1     #disabled by default
 Tweaking=1    #disabled by default
-PackageList=()
 
 
 ################################################################################
