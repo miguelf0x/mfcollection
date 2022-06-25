@@ -63,19 +63,19 @@ InstallIfNotExist()
   do
     if sudo pacman -Qs "$i" > /dev/null
     then
-      if $Verbose
+      if [[ $Verbose -eq 0 ]]
       then
         echo "$i is already installed, skipping..."
       fi
     else
-      if $Verbose
+      if [[ $Verbose -eq 0 ]]
       then
         echo "$i is added to queue..."
       fi
       $PackageList+=$i
     fi
   done
-  if $Verbose
+  if [[ $Verbose -eq 0 ]]
   then
     sudo pacman -S $PackageList --noconfirm --noprogressbar
   else
