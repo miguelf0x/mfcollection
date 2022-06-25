@@ -23,9 +23,10 @@ Verbose=1     #disabled by default
 Tweaking=1    #disabled by default
 PackageList=()
 
-###############################################################################
-# Help: displays help                                                         #
-###############################################################################
+
+################################################################################
+# Help: displays help                                                          #
+################################################################################
 
 Help()
 {
@@ -40,6 +41,16 @@ Help()
    echo
 }
 
+
+###############################################################################
+# Version: prints version info                                                #
+###############################################################################
+
+Version()
+{
+    echo "mfcollection.sh"
+    echo "Version a001 250622"
+}
 
 ################################################################################
 # IsPkgInstalled: checks if package is installed                               #
@@ -97,6 +108,10 @@ do
   case "$1" in
     -h | --help)
         Help
+        exit
+        ;;
+    -V | --version)
+        Version
         exit
         ;;
     -v|--verbose)
@@ -222,7 +237,7 @@ case $Tweaking in
         then
             FILE=/etc/udev/rules.d/60-ioschedulers.rules
             if test -f "$FILE"; then
-                echo "$FILE already exists. Rewrite? [y/N]" response2
+                echo "'$FILE' already exists. Rewrite? [y/N]" response2
                 if [[ "$response2" =~ ^([yY][eE][sS]|[yY])$ ]]
                 then
                     WriteSchedConfig
