@@ -241,7 +241,7 @@ case $Tweaking in
         then
             FILE=/etc/udev/rules.d/60-ioschedulers.rules
             if test -f "$FILE"; then
-                read -r -p "$FILE already exists. Rewrite? [y/N]" response2
+                read -r -p "$FILE already exists. Rewrite? [y/N] " response2
                 if [[ "$response2" =~ ^([yY][eE][sS]|[yY])$ ]]
                 then
                     WriteSchedConfig
@@ -262,7 +262,7 @@ case $Tweaking in
         then
             current_date=$(date)
             echo "# Created at $current_date" >> 90-override.conf.tmp
-            cp 90-override.conf.tmp /etc/sysctl.d/90-override.conf
+            sudo cp 90-override.conf.tmp /etc/sysctl.d/90-override.conf
             rm 90-override.conf.tmp
         else
             rm 90-override.conf.tmp
