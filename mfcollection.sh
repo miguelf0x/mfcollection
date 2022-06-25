@@ -21,7 +21,7 @@
 
 Verbose=1     #disabled by default
 Tweaking=1    #disabled by default
-
+PackageList=()
 
 ###############################################################################
 # Help: displays help                                                         #
@@ -56,6 +56,15 @@ IsPkgInstalled()
    fi
 }
 
+
+################################################################################
+# InstallPackages: installs multiple packages                                  #
+################################################################################
+
+InstallPackages()
+{
+  sudo pacman -S $PackageList --noconfirm --noprogressbar
+}
 
 ################################################################################
 # WriteSchedConfig: writes optimal IO scheduler config                         #
@@ -131,16 +140,17 @@ case $Verbose in
         echo "3. Installing basic development tools"
         if IsPkgInstalled git
         then
-          sudo pacman -S git --noconfirm  --noprogressbar
+          $PackageList += "git"
         fi
         if IsPkgInstalled curl
         then
-          sudo pacman -S curl --noconfirm  --noprogressbar
+          $PackageList += "curl"
         fi
         if IsPkgInstalled base-devel
         then
-          sudo pacman -S base-devel --noconfirm  --noprogressbar
+          $PackageList += "base-devel"
         fi
+        InstallPackages()
         echo "4. Installing yay"
         cd /tmp
         git clone https://aur.archlinux.org/yay.git
