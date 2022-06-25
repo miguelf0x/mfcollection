@@ -58,7 +58,7 @@ Version()
 
 InstallIfNotExist()
 {
-  local $PackageList=()
+  local PackageList=()
   for i in "${RequiredPackages[@]}"
   do
     if sudo pacman -Qs "$i" > /dev/null
