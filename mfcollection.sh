@@ -161,7 +161,7 @@ case $Verbose in
         sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
         echo "3. Installing basic development tools"
         RequiredPackages=("git" "curl" "base-devel")
-        InstallIfNotExist()
+        InstallIfNotExist
         echo "4. Installing yay"
         cd /tmp
         git clone https://aur.archlinux.org/yay.git
