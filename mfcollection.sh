@@ -49,8 +49,9 @@ Help()
 Version()
 {
     echo "mfcollection.sh"
-    echo "Version a001 250622"
+    echo "Version a002 250622"
 }
+
 
 ################################################################################
 # IsPkgInstalled: checks if package is installed                               #
@@ -165,7 +166,7 @@ case $Verbose in
         then
           $PackageList += "base-devel"
         fi
-        InstallPackages()
+        InstallPackages
         echo "4. Installing yay"
         cd /tmp
         git clone https://aur.archlinux.org/yay.git
