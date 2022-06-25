@@ -73,8 +73,8 @@ InstallIfNotExist()
         echo "$i is added to queue..."
       fi
       $PackageList+=$i
+    fi
   done
-
   if $Verbose
   then
     sudo pacman -S $PackageList --noconfirm --noprogressbar
