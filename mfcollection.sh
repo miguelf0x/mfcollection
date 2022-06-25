@@ -77,9 +77,15 @@ InstallIfNotExist()
   done
   if [[ $Verbose -eq 0 ]]
   then
-    sudo pacman -S $PackageList --noconfirm --noprogressbar
+    if ((${#PackageList[@]})); then
+      sudo pacman -S $PackageList --noconfirm --noprogressbar
+    else
+      echo "No packages to install"
+    fi
   else
-    sudo pacman -S $PackageList --noconfirm --noprogressbar > /dev/null
+    if ((${#PackageList[@]})); then
+      sudo pacman -S $PackageList --noconfirm --noprogressbar > /dev/null
+    fi
   fi
 }
 
