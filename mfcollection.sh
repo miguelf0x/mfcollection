@@ -97,8 +97,8 @@ echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\"
 # Main code                                                                    #
 ################################################################################
 
-SHORT=h,v,t
-LONG=help,verbose,tweak
+SHORT=h,v,V,t
+LONG=help,verbose,verstion,tweak
 OPTS=$(getopt -a -n mfcollection --options $SHORT --longoptions $LONG -- "$@")
 VALID_ARGUMENTS=$#
 
