@@ -160,7 +160,7 @@ case $Verbose in
         echo "2. Removing unrequired packages"
         sudo pacman -Rns $(pacman -Qdtq) --noconfirm  --noprogressbar
         echo "3. Installing basic development tools"
-        $RequiredPackages=("git","curl","base-devel")
+        RequiredPackages=("git" "curl" "base-devel")
         InstallIfNotExist()
         echo "4. Installing yay"
         cd /tmp
