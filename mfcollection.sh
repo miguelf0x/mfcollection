@@ -58,6 +58,7 @@ Version()
 
 InstallIfNotExist()
 {
+  local $PackageList=()
   for i in "${RequiredPackages[@]}"
   do
     if sudo pacman -Qs "$i" > /dev/null
@@ -71,7 +72,7 @@ InstallIfNotExist()
       then
         echo "$i is added to queue..."
       fi
-      local $PackageList+=$i
+      $PackageList+=$i
   done
 
   if $Verbose
