@@ -1,22 +1,38 @@
 #!/usr/bin/env bash
 
-############################################################
-# Variables                                                #
-############################################################
+###############################################################################
+#                             mfcollection script                             #
+#                                                                             #
+#  This script is designed for faster completion of Archlinux based systems.  #
+#  Currently implemented functions are:                                       #
+#     Updating system                                                         #
+#     Removing unrequired packages                                            #
+#     Installing git, curl, base-devel (required for yay compiling)           #
+#     Enabling SysRq key combinations                                         #
+#     Changing vm.swappiness value to optimal one (depending on RAM size)     #
+#     Changing IO schedulers to optimal ones (depending on drive type)        #
+#                                                                             #
+###############################################################################
+
+
+###############################################################################
+# Variables                                                                   #
+###############################################################################
 
 Verbose=1     #disabled by default
 Tweaking=1    #disabled by default
 
-############################################################
-# Help: displays help                                      #
-############################################################
+
+###############################################################################
+# Help: displays help                                                         #
+###############################################################################
 
 Help()
 {
    echo "This script is designed for automatisation of installing some necessary packages"
    echo "Script should not be run as root"
    echo
-   echo "Syntax: mfcollection [-v|-h|-t]"
+   echo "Syntax: mfcollection [-v|h|t]"
    echo "Options:"
    echo "h     Print this help."
    echo "v     Verbose mode."
@@ -24,9 +40,10 @@ Help()
    echo
 }
 
-############################################################
-# IsPkgInstalled: cheks if package exists                  #
-############################################################
+
+################################################################################
+# IsPkgInstalled: checks if package is installed                               #
+################################################################################
 
 IsPkgInstalled()
 {
@@ -39,23 +56,25 @@ IsPkgInstalled()
    fi
 }
 
-############################################################
-# WriteSchedConfig: writes optimal scheduler config        #
-############################################################
+
+################################################################################
+# WriteSchedConfig: writes optimal IO scheduler config                         #
+################################################################################
 
 WriteSchedConfig()
 {
 echo "# set scheduler for NVMe" > /etc/udev/rules.d/60-ioschedulers.rules
 echo "ACTION==\"add|change\", KERNEL==\"nvme[0-9]*\", ATTR{queue/scheduler}=\"none\"" >> /etc/udev/rules.d/60-ioschedulers.rules
-echo "# set scheduler for eMMC" >> /etc/udev/rules.d/60-ioschedulers.rules
+echo "# set scheduler for eMMC and SSD" >> /etc/udev/rules.d/60-ioschedulers.rules
 echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]|mmcblk[0-9]*\", ATTR{queue/rotational}==\"0\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
 echo "# set scheduler for rotating disks" >> /etc/udev/rules.d/60-ioschedulers.rules
 echo "ACTION==\"add|change\", KERNEL==\"sd[a-z]\", ATTR{queue/rotational}==\"1\", ATTR{queue/scheduler}=\"bfq\"" >> /etc/udev/rules.d/60-ioschedulers.rules
 }
 
-############################################################
-# Main code                                                #
-############################################################
+
+################################################################################
+# Main code                                                                    #
+################################################################################
 
 SHORT=h,v,t
 LONG=help,verbose,tweak
@@ -168,14 +187,14 @@ case $Tweaking in
             mem=${memf/.*} ## convert float to int
             if [[ $mem -le 512 ]];
             then
-                swappiness_opt=60
+                swappiness_opt=70
             elif [[ $mem -gt 512 && $mem -le 2048 ]];
             then
-                swappiness_opt=50
-            elif [[ $mem -gt 2048 && $mem -le 8192 ]];
+                swappiness_opt=60
+            elif [[ $mem -gt 2048 && $mem -le 4096 ]];
             then
-                swappiness_opt=40
-            elif [[ $mem -gt 8192 && $mem -le 16384 ]];
+                swappiness_opt=45
+            elif [[ $mem -gt 4096 && $mem -le 8192 ]];
             then
                 swappiness_opt=20
             else
