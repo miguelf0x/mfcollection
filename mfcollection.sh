@@ -35,16 +35,15 @@ Tweaking=1    #disabled by default
 
 Help()
 {
-   echo "This script is designed for automation of installing some necessary packages"
-   echo -e "${RED}Script should not be run as root${NC}"
-   echo
-   echo "Syntax: mfcollection [-h|v|V|t]"
-   echo "Options:"
-   echo "h     Print this help."
-   echo "v     Verbose mode."
-   echo "V     Print script version."
-   echo "t     Enable tweaking stage."
-   echo
+   echo -e "This script is designed for automation of installing some necessary packages
+   Sudo is required for normal operation
+   ${RED}Script should not be run as root${NC}\n
+   Syntax: mfcollection [-h|v|V|t]
+   Options:
+   h     Print this help.
+   v     Verbose mode.
+   V     Print script version.
+   t     Enable tweaking stage.\n"
 }
 
 
@@ -54,8 +53,8 @@ Help()
 
 Version()
 {
-    echo "mfcollection.sh"
-    echo "Version a004 250622"
+  echo -e "mfcollection.sh
+  Version a004 250622"
 }
 
 
