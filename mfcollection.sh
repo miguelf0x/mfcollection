@@ -107,11 +107,11 @@ eval set -- "$OPTS"
 while [ "$1" != "--" ];
 do
   case "$1" in
-    -h | --help)
+    -h|--help)
         Help
         exit
         ;;
-    -V | --version)
+    -V|--version)
         Version
         exit
         ;;
